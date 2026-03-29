@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Selector - AcaSuccess</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .header h1 i {
+            margin-right: 15px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.6s ease;
+            animation-fill-mode: both;
+        }
+        
+        .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+        .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+        .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+        .dashboard-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .card-header.student { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-header.lecturer { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-header.mentor { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .card-header.admin { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        
+        .card-header i {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .demo-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-info h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .demo-info p {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0.25rem 0;
+        }
+        
+        .demo-info code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .features-list li i {
+            color: #667eea;
+            font-size: 0.8rem;
+            width: 20px;
+        }
+        
+        .select-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .select-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .quick-login {
+            background: white;
+            border-radius: 25px;
+            padding: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.6s ease;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+        
+        .quick-login h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .cred-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cred-card:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .cred-card:hover .role-icon,
+        .cred-card:hover .username,
+        .cred-card:hover .password {
+            color: white;
+        }
+        
+        .cred-card .role-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+        
+        .cred-card .role-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cred-card .username {
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: #666;
+        }
+        
+        .cred-card .password {
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: #888;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 1.8rem; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        
+        <div class="header">
+            <h1><i class="fas fa-chalkboard-user"></i> Select Your Dashboard</h1>
+            <p>Choose which role you want to experience. Each dashboard has unique features.</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Student Dashboard Card -->
+            <div class="dashboard-card" onclick="selectDashboard('student')">
+                <div class="card-header student">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>Student Dashboard</h2>
+                    <p>Track your academic progress</p>
+                </div>
+                <div class="card-body">
+                    <div class="demo-info">
+                        <h4>📌 Demo Credentials:</h4>
+                        <p><i class="fas fa-user"></i> <code>student1</code></p>
+                        <p><i class="fas fa-lock"></i> <code>student123</code></p>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-chart-line"></i> View GPA & Attendance</li>
+                        <li><i class="fas fa-calendar-alt"></i> Create Study Plans</li>
+                        <li><i class="fas fa-comments"></i> Chat with Mentor</li>
+                        <li><i class="fas fa-heartbeat"></i> Mental Health Check-ins</li>
+                    </ul>
+                    <button class="select-btn" onclick="event.stopPropagation(); selectDashboard('student')">
+                        <i class="fas fa-arrow-right"></i> Open Student Dashboard
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lecturer Dashboard Card -->
+            <div class="dashboard-card" onclick="selectDashboard('lecturer')">
+                <div class="card-header lecturer">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h2>Lecturer Dashboard</h2>
+                    <p>Monitor student performance</p>
+                </div>
+                <div class="card-body">
+                    <div class="demo-info">
+                        <h4>📌 Demo Credentials:</h4>
+                        <p><i class="fas fa-user"></i> <code>lecturer1</code></p>
+                        <p><i class="fas fa-lock"></i> <code>lecturer123</code></p>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-users"></i> View All Students</li>
+                        <li><i class="fas fa-chart-bar"></i> Track Class Performance</li>
+                        <li><i class="fas fa-exclamation-triangle"></i> Send Early Warnings</li>
+                        <li><i class="fas fa-file-alt"></i> Generate Reports</li>
+                    </ul>
+                    <button class="select-btn" onclick="event.stopPropagation(); selectDashboard('lecturer')">
+                        <i class="fas fa-arrow-right"></i> Open Lecturer Dashboard
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mentor Dashboard Card -->
+            <div class="dashboard-card" onclick="selectDashboard('mentor')">
+                <div class="card-header mentor">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h2>Mentor Dashboard</h2>
+                    <p>Guide and support students</p>
+                </div>
+                <div class="card-body">
+                    <div class="demo-info">
+                        <h4>📌 Demo Credentials:</h4>
+                        <p><i class="fas fa-user"></i> <code>mentor1</code></p>
+                        <p><i class="fas fa-lock"></i> <code>mentor123</code></p>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-users"></i> View Your Mentees</li>
+                        <li><i class="fas fa-comments"></i> Send Messages</li>
+                        <li><i class="fas fa-chart-line"></i> Track Student Progress</li>
+                        <li><i class="fas fa-bell"></i> Receive Alerts</li>
+                    </ul>
+                    <button class="select-btn" onclick="event.stopPropagation(); selectDashboard('mentor')">
+                        <i class="fas fa-arrow-right"></i> Open Mentor Dashboard
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Admin Dashboard Card -->
+            <div class="dashboard-card" onclick="selectDashboard('admin')">
+                <div class="card-header admin">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Admin Dashboard</h2>
+                    <p>Institutional analytics</p>
+                </div>
+                <div class="card-body">
+                    <div class="demo-info">
+                        <h4>📌 Demo Credentials:</h4>
+                        <p><i class="fas fa-user"></i> <code>admin1</code></p>
+                        <p><i class="fas fa-lock"></i> <code>admin123</code></p>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-chart-pie"></i> Overall Analytics</li>
+                        <li><i class="fas fa-building"></i> Department Stats</li>
+                        <li><i class="fas fa-bell"></i> View All Warnings</li>
+                        <li><i class="fas fa-download"></i> Export Reports</li>
+                    </ul>
+                    <button class="select-btn" onclick="event.stopPropagation(); selectDashboard('admin')">
+                        <i class="fas fa-arrow-right"></i> Open Admin Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Login Section -->
+        <div class="quick-login">
+            <h3><i class="fas fa-bolt"></i> Quick Login</h3>
+            <div class="credentials-grid">
+                <div class="cred-card" onclick="quickLogin('student1', 'student123')">
+                    <div class="role-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="role-name">Student</div>
+                    <div class="username">student1</div>
+                    <div class="password">student123</div>
+                </div>
+                <div class="cred-card" onclick="quickLogin('lecturer1', 'lecturer123')">
+                    <div class="role-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="role-name">Lecturer</div>
+                    <div class="username">lecturer1</div>
+                    <div class="password">lecturer123</div>
+                </div>
+                <div class="cred-card" onclick="quickLogin('mentor1', 'mentor123')">
+                    <div class="role-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <div class="role-name">Mentor</div>
+                    <div class="username">mentor1</div>
+                    <div class="password">mentor123</div>
+                </div>
+                <div class="cred-card" onclick="quickLogin('admin1', 'admin123')">
+                    <div class="role-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="role-name">Admin</div>
+                    <div class="username">admin1</div>
+                    <div class="password">admin123</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function selectDashboard(role) {
+            let username = '';
+            let password = '';
+            
+            switch(role) {
+                case 'student':
+                    username = 'student1';
+                    password = 'student123';
+                    break;
+                case 'lecturer':
+                    username = 'lecturer1';
+                    password = 'lecturer123';
+                    break;
+                case 'mentor':
+                    username = 'mentor1';
+                    password = 'mentor123';
+                    break;
+                case 'admin':
+                    username = 'admin1';
+                    password = 'admin123';
+                    break;
+            }
+            
+            await loginAndRedirect(username, password);
+        }
+        
+        async function quickLogin(username, password) {
+            await loginAndRedirect(username, password);
+        }
+        
+        async function loginAndRedirect(username, password) {
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    showNotification('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 500);
+                } else {
+                    showNotification(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showNotification('Network error. Make sure server is running.', 'error');
+            }
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: ${type === 'success' ? '#48bb78' : '#e53e3e'};
+                color: white;
+                border-radius: 10px;
+                font-weight: 500;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            `;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

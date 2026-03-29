@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .register-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 350px;
+        }
+        input, select { width:100%; padding:10px; margin:10px 0; border:1px solid #ddd; border-radius:5px; }
+        button { width:100%; padding:10px; background:#667eea; color:white; border:none; border-radius:5px; cursor:pointer; }
+        .message { margin-top:10px; }
+        .success { color:green; }
+        .error { color:red; }
+    </style>
+</head>
+<body>
+    <div class="register-box">
+        <h2>Register</h2>
+        <div id="msgDiv"></div>
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="text" id="username" placeholder="Username">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <select id="role">
+            <option value="student">Student</option>
+            <option value="lecturer">Lecturer</option>
+            <option value="mentor">Mentor</option>
+        </select>
+        <button onclick="register()">Register</button>
+        <p style="margin-top:20px;">Already have an account? <a href="/login">Login</a></p>
+    </div>
+    <script>
+        async function register() {
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, username, email, password, role})
+            });
+            const data = await response.json();
+            const msgDiv = document.getElementById('msgDiv');
+            if (response.ok && data.success) {
+                msgDiv.innerHTML = '<div class="message success">✓ Registration successful! Redirecting...</div>';
+                setTimeout(() => window.location.href = '/login', 2000);
+            } else {
+                msgDiv.innerHTML = '<div class="message error">✗ ' + data.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>

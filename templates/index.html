@@ -1,0 +1,393 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcaSuccess | Academic Success System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo i {
+            background: none;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rem 5% 4rem;
+            gap: 4rem;
+        }
+        
+        .hero-content {
+            flex: 1;
+            color: white;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-content .highlight {
+            background: linear-gradient(135deg, #ffd89b, #c7e9fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .hero-buttons .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .hero-buttons .btn-outline {
+            border-color: white;
+            color: white;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-image i {
+            font-size: 20rem;
+            color: rgba(255,255,255,0.2);
+        }
+        
+        /* Features */
+        .features {
+            background: white;
+            padding: 5rem 5%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a2c3e;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #1a2c3e;
+        }
+        
+        .feature-card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 5rem 5%;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta .btn-primary {
+            background: white;
+            color: #667eea;
+            margin-top: 2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a2c3e;
+            color: white;
+            padding: 3rem 5% 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: #a0aec0;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #a0aec0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 6rem;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-image i {
+                font-size: 12rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-graduation-cap"></i> AcaSuccess</div>
+        <div class="nav-links">
+            <a href="#" onclick="scrollToSection('home')">Home</a>
+            <a href="#" onclick="scrollToSection('features')">Features</a>
+            <a href="/login" class="btn btn-outline">Login</a>
+            <a href="/register" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Transform Your <span class="highlight">Academic Journey</span> with Smart Mentorship</h1>
+            <p>AI-powered study planning, personalized mentorship, and wellness support to help you achieve academic excellence.</p>
+            <div class="hero-buttons">
+                <a href="/register" class="btn btn-primary">Start Free Trial</a>
+                <a href="/login" class="btn btn-outline">Login</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><div class="stat-number">95%</div><div class="stat-label">Success Rate</div></div>
+                <div class="stat"><div class="stat-number">1000+</div><div class="stat-label">Students</div></div>
+                <div class="stat"><div class="stat-number">50+</div><div class="stat-label">Mentors</div></div>
+            </div>
+        </div>
+        <div class="hero-image"><i class="fas fa-chalkboard-user"></i></div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Smart Features for Success</h2>
+        <div class="features-grid">
+            <div class="feature-card" onclick="window.location.href='/login'">
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Academic Tracking</h3>
+                <p>Real-time GPA monitoring and performance analytics</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='/login'">
+                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <h3>AI Study Planner</h3>
+                <p>Smart study schedule optimization</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='/login'">
+                <div class="feature-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <h3>Mentorship Program</h3>
+                <p>Connect with experienced mentors</p>
+            </div>
+            <div class="feature-card" onclick="window.location.href='/login'">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>Mental Wellness</h3>
+                <p>Regular wellness assessments</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to Transform Your Academic Journey?</h2>
+        <p>Join thousands of students who have already achieved academic excellence</p>
+        <a href="/register" class="btn btn-primary">Get Started for Free</a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section"><h4>AcaSuccess</h4><p>Empowering academic excellence</p></div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a onclick="scrollToSection('home')">Home</a>
+                <a onclick="scrollToSection('features')">Features</a>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2024 AcaSuccess. All rights reserved.</p></div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

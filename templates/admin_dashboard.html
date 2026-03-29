@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AcaSuccess</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2c3e 0%, #2d3e50 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        .sidebar-header {
+            text-align: center;
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            margin: 0.3rem 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 3px solid #667eea;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        .top-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .department-item {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-chart-line"></i> AcaSuccess</h2>
+            <p>Admin Portal</p>
+        </div>
+        <div class="nav-item active" data-section="overview">
+            <i class="fas fa-tachometer-alt"></i> Overview
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Admin Dashboard</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <div id="overviewSection">
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Total Students</h3><div class="stat-value" id="totalStudents">0</div></div>
+                <div class="stat-card"><h3>Average GPA</h3><div class="stat-value" id="avgGpa">0.0</div></div>
+                <div class="stat-card"><h3>At Risk</h3><div class="stat-value" id="atRisk">0</div></div>
+                <div class="stat-card"><h3>Retention Rate</h3><div class="stat-value" id="retention">0%</div></div>
+            </div>
+            
+            <div class="card">
+                <h3>🏢 Department Distribution</h3>
+                <div id="departments"></div>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Performance Summary</h3>
+                <table>
+                    <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+                    <tbody id="metricsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/admin/analytics');
+                const data = await response.json();
+                document.getElementById('totalStudents').innerText = data.total_students;
+                document.getElementById('avgGpa').innerText = data.average_gpa;
+                document.getElementById('atRisk').innerText = data.at_risk;
+                document.getElementById('retention').innerText = data.retention + '%';
+                
+                const depts = ['Computer Science: 3', 'Business: 2', 'Engineering: 2', 'Mathematics: 1'];
+                document.getElementById('departments').innerHTML = depts.map(d => `<span class="department-item">${d}</span>`).join('');
+                
+                document.getElementById('metricsTable').innerHTML = `
+                    <tr><td>Total Staff</td><td>5</td></tr>
+                    <tr><td>Engagement Rate</td><td>87.3%</td></tr>
+                    <tr><td>Monthly Growth</td><td>+12.5%</td></tr>
+                `;
+            } catch(e) { console.log('Demo mode'); }
+        }
+        
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+        
+        loadAnalytics();
+    </script>
+</body>
+</html>

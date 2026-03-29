@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Selector</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card-header {
+            padding: 30px;
+            color: white;
+        }
+        .student { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .lecturer { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .mentor { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .admin { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .card-header i { font-size: 3rem; margin-bottom: 15px; }
+        .card-header h2 { font-size: 1.5rem; }
+        .card-body { padding: 20px; }
+        .demo { background: #f8f9fa; padding: 10px; border-radius: 10px; margin: 15px 0; font-size: 12px; }
+        .features { list-style: none; margin: 15px 0; text-align: left; }
+        .features li { padding: 5px 0; font-size: 13px; color: #666; }
+        .select-btn {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .top-bar {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .home-btn {
+            background: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <a href="/" class="home-btn"><i class="fas fa-home"></i> Home</a>
+            <div class="user-info">
+                <span id="userName">Loading...</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="header">
+            <h1><i class="fas fa-chalkboard-user"></i> Select Your Dashboard</h1>
+            <p>Choose which role you want to experience</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="card" onclick="openDashboard('student')">
+                <div class="card-header student">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>Student Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <div class="demo"><strong>Demo:</strong> student1 / student123</div>
+                    <ul class="features">
+                        <li>📊 View GPA & Attendance</li>
+                        <li>📅 Create Study Plans</li>
+                        <li>💬 Chat with Mentor</li>
+                    </ul>
+                    <button class="select-btn">Open Student Dashboard</button>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openDashboard('lecturer')">
+                <div class="card-header lecturer">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h2>Lecturer Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <div class="demo"><strong>Demo:</strong> lecturer1 / lecturer123</div>
+                    <ul class="features">
+                        <li>👥 View All Students</li>
+                        <li>⚠️ Send Early Warnings</li>
+                        <li>📈 Track Performance</li>
+                    </ul>
+                    <button class="select-btn">Open Lecturer Dashboard</button>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openDashboard('mentor')">
+                <div class="card-header mentor">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h2>Mentor Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <div class="demo"><strong>Demo:</strong> mentor1 / mentor123</div>
+                    <ul class="features">
+                        <li>👥 View Your Mentees</li>
+                        <li>💬 Send Messages</li>
+                        <li>📊 Track Progress</li>
+                    </ul>
+                    <button class="select-btn">Open Mentor Dashboard</button>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openDashboard('admin')">
+                <div class="card-header admin">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Admin Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    <div class="demo"><strong>Demo:</strong> admin1 / admin123</div>
+                    <ul class="features">
+                        <li>📊 Institutional Analytics</li>
+                        <li>🏢 Department Stats</li>
+                        <li>📈 Retention Rates</li>
+                    </ul>
+                    <button class="select-btn">Open Admin Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/current-user');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.logged_in) {
+                        document.getElementById('userName').innerHTML = '<i class="fas fa-user"></i> ' + data.name;
+                    } else {
+                        window.location.href = '/login';
+                    }
+                } else {
+                    window.location.href = '/login';
+                }
+            } catch(e) {
+                window.location.href = '/login';
+            }
+        }
+        
+        function openDashboard(role) {
+            window.location.href = '/dashboard/' + role;
+        }
+        
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+        
+        loadUserInfo();
+    </script>
+</body>
+</html>

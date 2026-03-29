@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard - AcaSuccess</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2c3e 0%, #2d3e50 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+        .sidebar-header {
+            text-align: center;
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            margin: 0.3rem 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 3px solid #667eea;
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        .top-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .mentee-item {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mentee-item:hover { background: #f8f9fa; }
+        .message-bubble {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-hand-holding-heart"></i> AcaSuccess</h2>
+            <p>Mentor Portal</p>
+        </div>
+        <div class="nav-item active" data-section="mentees">
+            <i class="fas fa-users"></i> My Mentees
+        </div>
+        <div class="nav-item" data-section="messages">
+            <i class="fas fa-comments"></i> Messages
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1>Welcome, <span id="mentorName">Prof. Michael Brown</span>!</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <div id="menteesSection">
+            <div class="stats-grid">
+                <div class="stat-card"><h3>Active Mentees</h3><div class="stat-value" id="totalMentees">0</div></div>
+                <div class="stat-card"><h3>Avg GPA</h3><div class="stat-value" id="avgGpa">0.0</div></div>
+                <div class="stat-card"><h3>Need Support</h3><div class="stat-value" id="needSupport">0</div></div>
+            </div>
+            <div class="card">
+                <h3>👥 My Mentees</h3>
+                <div id="menteesList"></div>
+            </div>
+        </div>
+        
+        <div id="messagesSection" style="display:none;">
+            <div class="card">
+                <h3>💬 Conversation with <span id="chatWith"></span></h3>
+                <div id="conversationList"></div>
+                <textarea id="messageInput" rows="3" placeholder="Type your message..."></textarea>
+                <button onclick="sendMessage()">Send Message</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        let mentees = [];
+        let messages = [];
+        let currentMentee = null;
+        
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                const section = item.dataset.section;
+                document.getElementById('menteesSection').style.display = section === 'mentees' ? 'block' : 'none';
+                document.getElementById('messagesSection').style.display = section === 'messages' ? 'block' : 'none';
+                if (section === 'messages' && !currentMentee && mentees.length) {
+                    selectMentee(mentees[0].id);
+                }
+            });
+        });
+        
+        async function loadMentees() {
+            try {
+                const response = await fetch('/api/mentor/mentees');
+                mentees = await response.json();
+                document.getElementById('totalMentees').innerText = mentees.length;
+                let sumGpa = mentees.reduce((s, m) => s + m.gpa, 0);
+                document.getElementById('avgGpa').innerText = (sumGpa / mentees.length).toFixed(2);
+                let needSupport = mentees.filter(m => m.gpa < 2.5).length;
+                document.getElementById('needSupport').innerText = needSupport;
+                
+                const container = document.getElementById('menteesList');
+                container.innerHTML = mentees.map(m => `
+                    <div class="mentee-item" onclick="selectMentee(${m.id})">
+                        <div>
+                            <strong>${m.name}</strong> (${m.student_id})<br>
+                            <small>GPA: ${m.gpa} | Dept: ${m.department}</small>
+                        </div>
+                        ${m.gpa < 2.5 ? '<span style="color:#e53e3e;">⚠️ Needs Support</span>' : ''}
+                    </div>
+                `).join('');
+            } catch(e) { console.log('Demo mode'); }
+        }
+        
+        function selectMentee(id) {
+            currentMentee = mentees.find(m => m.id === id);
+            document.getElementById('chatWith').innerText = currentMentee.name;
+            document.getElementById('messagesSection').style.display = 'block';
+            document.getElementById('menteesSection').style.display = 'none';
+            loadConversation();
+        }
+        
+        async function loadConversation() {
+            try {
+                const response = await fetch('/api/mentor/messages');
+                const allMessages = await response.json();
+                const convMessages = allMessages.filter(m => 
+                    m.sender_id === currentMentee.id || m.receiver_id === currentMentee.id
+                );
+                
+                const container = document.getElementById('conversationList');
+                if (convMessages.length === 0) {
+                    container.innerHTML = '<p>No messages yet. Start a conversation!</p>';
+                } else {
+                    container.innerHTML = convMessages.map(m => `
+                        <div class="message-bubble">
+                            <strong>${m.sender_name || 'User'}:</strong>
+                            <p>${m.content}</p>
+                            <small>${new Date(m.timestamp).toLocaleString()}</small>
+                        </div>
+                    `).join('');
+                }
+            } catch(e) { console.log('Demo mode'); }
+        }
+        
+        async function sendMessage() {
+            const content = document.getElementById('messageInput').value;
+            if (!content || !currentMentee) return;
+            
+            try {
+                const response = await fetch('/api/mentor/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ receiver_id: currentMentee.id, content })
+                });
+                if (response.ok) {
+                    document.getElementById('messageInput').value = '';
+                    loadConversation();
+                }
+            } catch(e) { console.log('Demo mode'); }
+        }
+        
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+        
+        loadMentees();
+    </script>
+</body>
+</html>
